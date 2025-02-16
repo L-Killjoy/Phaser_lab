@@ -17,8 +17,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        if(!this._touch_damage){
-            this.body.setVelocity(this.scene.player.x - this.x, this.scene.player.y - this.y);
+        if(this.active){
+            if(!this._touch_damage){
+                this.body.setVelocity(this.scene.player.x - this.x, this.scene.player.y - this.y);
+            }
         }
     }
 }
