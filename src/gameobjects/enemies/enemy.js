@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import get_norm_dist from '../../utils/vector';
 
 //This class only serves as a template. Thus, it should never be instantiated
 export default class Enemy extends Phaser.GameObjects.Sprite {
@@ -17,8 +18,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     update() {
+        
+    }
+
+    follow_player(){
         if(!this._touch_damage){
-            this.body.setVelocity(this.scene.player.x - this.x, this.scene.player.y - this.y);
+            let {x_norm, y_norm} = get_norm_dist(this.x, this.y, this.scene.player.x, this.scene.player.y);
+            this.body.setVelocity(x_norm*this._speed, y_norm*this._speed);
+
         }
     }
 }
