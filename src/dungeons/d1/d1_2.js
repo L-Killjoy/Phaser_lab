@@ -25,7 +25,7 @@ export default class D1_2 extends Room {
         super.create();
 
         // Play the music
-        this.music = this.sound.add('backgroundMusic', { loop: true, volume: 0 });
+        this.music = this.sound.add('backgroundMusic', { loop: true, volume: 0.2 });
         this.music.play();
     }
 
@@ -35,6 +35,8 @@ export default class D1_2 extends Room {
 
     nextRoom(){
         // console.log('Room ' + nextRoom);
+        this.music.stop();
+        this.scene.stop('d1_2');
         this.scene.start('d1_1');
     }
 }

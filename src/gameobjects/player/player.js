@@ -129,28 +129,28 @@ export default class Player extends Phaser.GameObjects.Sprite {
     enemy_touch_damage(player, enemy) {
         if(enemy.active){
             if (this._invulnerable) return;
-
+    
             console.log('touch damage');
-
+    
             this._invulnerable = true;
             this._life--;
             console.log(this._life);
-
+    
             enemy._touch_damage = true;
             let rate = 500;
             let {x_norm, y_norm} = get_norm_dist(this.x, this.y, enemy.x, enemy.y);
             enemy.body.setVelocity(x_norm*rate, y_norm*rate);
-
+    
             this.scene.time.delayedCall(50, () => {
-                enemy._touch_damage = false;
-                enemy.body.setVelocity(0, 0); // Stop enemy movement
+                if(enemy.active){
+                    enemy._touch_damage = false;
+                    enemy.body.setVelocity(0, 0); // Stop enemy movement
+                }
             });
-
-
+    
             this.scene.time.delayedCall(1000, () => {
                 this._invulnerable = false;
             });
         }
     }
-
 }
