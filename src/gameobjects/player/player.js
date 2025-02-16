@@ -17,6 +17,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this._bullets = 7;
         this._max_ammo = 7;
         this._speed = 300;
+        this._isAlive = true;
         this._invulnerable = false;
         
         this.scene.add.existing(this);
@@ -44,9 +45,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.shoot(pointer.x, pointer.y);
             }
         });
-
     }
-
     /**
      * Métodos preUpdate de Phaser. En este caso solo se encarga del movimiento del jugador.
      * Como se puede ver, no se tratan las colisiones con las estrellas, ysa que estas colisiones 
@@ -64,7 +63,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.reload();
         }
 
-        if(Phaser.Input.Keyboard.JustDown(this._space)){ console.log('Dash'); this.dash(); }
+        if(Phaser.Input.Keyboard.JustDown(this._space)){ this.dash(); }
 
         if(this._w.isDown){
             this.body.setVelocityY(-this._speed);
@@ -91,10 +90,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.body.setVelocityX(this._speed);
         }
     }
-    
 
    update(){
-
+        if(this._life <= 0){
+            this._isAlive = false;
+        }
    }
 
    shoot(x, y){
@@ -114,7 +114,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
    }
 
    dash(){
-
+        if(this._stamina>0){
+            console.log('Dash');
+            // this.scene.sound.play('shootSound', { volume: 1 });
+            this._stamina--;
+        }
    }
 
     enableCollision(enemies) {
@@ -122,29 +126,32 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     enemy_touch_damage(player, enemy) {
-        if (this.invulnerable) return;
-
-        console.log('touch damage');
-
-        this.invulnerable = true;
-        this._life--;
-        console.log(this._life);
-
-        enemy._touch_damage = true;
-        let rate = 5;
-        let new_x = enemy.x - this.x;
-        let new_y = enemy.y - this.y;
-        enemy.body.setVelocity(new_x*rate, new_y*rate);
-
-        this.scene.time.delayedCall(50, () => {
-            enemy._touch_damage = false;
-            enemy.body.setVelocity(0, 0); // Stop enemy movement
-        });
-
-
-        this.scene.time.delayedCall(1000, () => {
-            this.invulnerable = false;
-        });
+        if(enemy.active){
+            if (this._invulnerable) return;
+    
+            console.log('touch damage');
+    
+            this._invulnerable = true;
+            this._life--;
+            console.log(this._life);
+    
+            enemy._touch_damage = true;
+            let rate = 5;
+            let new_x = enemy.x - this.x;
+            let new_y = enemy.y - this.y;
+            enemy.body.setVelocity(new_x*rate, new_y*rate);
+    
+            this.scene.time.delayedCall(50, () => {
+                if(enemy.active){
+                    enemy._touch_damage = false;
+                    enemy.body.setVelocity(0, 0); // Stop enemy movement
+                }
+            });
+    
+            this.scene.time.delayedCall(1000, () => {
+                this._invulnerable = false;
+            });
+        }
     }
 
 }
