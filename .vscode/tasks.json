@@ -5,7 +5,7 @@
 			"type": "npm",
 			"script": "start",
 			"label": "npm: start",
-			"dependsOn": "npm: install",
+			//"dependsOn": "npm: install",
 			"isBackground": true,
 			"problemMatcher": {
 				"background": {

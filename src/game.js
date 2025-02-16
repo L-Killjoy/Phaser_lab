@@ -1,6 +1,6 @@
 import Boot from './boot.js';
 import End from './end.js';
-import Level from './level.js';
+import Level from './dungeons/d1/level.js';
 import Phaser from 'phaser';
 
 /**
@@ -9,8 +9,8 @@ import Phaser from 'phaser';
  */
 let config = {
     type: Phaser.AUTO,
-    width: 1000,
-    height: 500,
+    width: 640,
+    height: 512,
     parent: 'juego',
     scale: {
         //mode: Phaser.Scale.FIT,  
@@ -21,8 +21,8 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 400 },
-            debug: false
+            gravity: { y: 0 },
+            debug: true
         }
     }
 };

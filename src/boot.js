@@ -1,10 +1,14 @@
 import Phaser from 'phaser'
 
+import room from '../assets/sprites/misc/room_base.png'
+import angel from '../assets/sprites/enemies/angel.png'
+import player from '../assets/sprites/player/player.png'
+import bullet from '../assets/sprites/utils/bullet.png'
+import shootSound from '../assets/audio/utils/shoot.wav'
+import reloadSound from '../assets/audio/utils/reload.wav'
+import backgroundMusic from '../assets/audio/music/backgroundMusic.mp3'
 
-import platform from '../assets/sprites/platform.png'
-import base from '../assets/sprites/base.png'
-import star from '../assets/sprites/star.png'
-import player from '../assets/sprites/player.png'
+
 /**
  * Escena para la precarga de los assets que se usarán en el juego.
  * Esta escena se puede mejorar añadiendo una imagen del juego y una 
@@ -26,10 +30,13 @@ export default class Boot extends Phaser.Scene {
   preload() {
     // Con setPath podemos establecer el prefijo que se añadirá a todos los load que aparecen a continuación
     //this.load.setPath('assets/sprites/');
-    this.load.image('platform', platform);
-    this.load.image('base', base);
-    this.load.image('star', star);
+    this.load.image('angel', angel);
+    this.load.image('room', room);
     this.load.image('player', player);
+    this.load.image('bullet', bullet);
+    this.load.audio('shootSound', shootSound);
+    this.load.audio('reloadSound', reloadSound);
+    this.load.audio('backgroundMusic', backgroundMusic);
   }
 
   /**
