@@ -11,12 +11,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
      */
     constructor(scene, x, y) {
         super(scene, x, y, 'player');
-
+        // Init attributes
         this._life = 6;
         this._stamina = 3;
         this._bullets = 7;
         this._max_ammo = 7;
         this._speed = 300;
+        this._invulnerable = false;
         
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
@@ -100,7 +101,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         console.log('Left-click detected at:', x, y);
         console.log('Bullets:', this._bullets);
         if(this._bullets>0){
-            new Bullet(this.scene, this.x, this.y, x, y);
+            this.scene.newBullet(this.x, this.y, x, y);
+            // this.scene._bullets.pushback(new Bullet(this.scene, this.x, this.y, x, y));
             this.scene.sound.play('shootSound', { volume: 1 });
             this._bullets--;
         }
@@ -114,4 +116,35 @@ export default class Player extends Phaser.GameObjects.Sprite {
    dash(){
 
    }
+
+    enableCollision(enemies) {
+        this.scene.physics.add.overlap(this, this.scene.enemies, this.enemy_touch_damage, null, this);
+    }
+
+    enemy_touch_damage(player, enemy) {
+        if (this.invulnerable) return;
+
+        console.log('touch damage');
+
+        this.invulnerable = true;
+        this._life--;
+        console.log(this._life);
+
+        enemy._touch_damage = true;
+        let rate = 5;
+        let new_x = enemy.x - this.x;
+        let new_y = enemy.y - this.y;
+        enemy.body.setVelocity(new_x*rate, new_y*rate);
+
+        this.scene.time.delayedCall(50, () => {
+            enemy._touch_damage = false;
+            enemy.body.setVelocity(0, 0); // Stop enemy movement
+        });
+
+
+        this.scene.time.delayedCall(1000, () => {
+            this.invulnerable = false;
+        });
+    }
+
 }

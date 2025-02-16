@@ -1,36 +1,24 @@
 import Phaser from 'phaser';
 
+//This class only serves as a template. Thus, it should never be instantiated
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
-    /**
-     * Constructor del jugador
-     * @param {Phaser.Scene} scene Escena a la que pertenece el jugador
-     * @param {number} x Coordenada X
-     * @param {number} y Coordenada Y
-     */
-    constructor(scene, x, y) {
-        super(scene, x, y, 'angel');
+    constructor(scene, x, y, sprite) {
+        super(scene, x, y, sprite);
 
-        this._life = 6;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-
-        this.body.setImmovable(true);
-        // Queremos que el enemigo no se salga de los límites del mundo
         this.body.setCollideWorldBounds();
+        this._touch_damage = false;
+
+        // Abstract properties -> Children must override
+        this._life = null;
+        this._speed = null;
     }
 
-    /**
-     * Métodos preUpdate de Phaser. En este caso solo se encarga del movimiento del jugador.
-     * Como se puede ver, no se tratan las colisiones con las estrellas, ysa que estas colisiones 
-     * ya son gestionadas por la estrella (no gestionar las colisiones dos veces)
-     * @override
-     */
-    preUpdate(t, dt) {
-        super.preUpdate(t, dt);
+    update() {
+        if(!this._touch_damage){
+            this.body.setVelocity(this.scene.player.x - this.x, this.scene.player.y - this.y);
+        }
     }
-    
-   update(){
-
-   }
 }

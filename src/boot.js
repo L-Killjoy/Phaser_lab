@@ -1,9 +1,14 @@
 import Phaser from 'phaser'
 
-import room from '../assets/sprites/misc/room_base.png'
+import room_d1_2 from '../assets/sprites/misc/room_d1_2.png'
+import room_d1_1 from '../assets/sprites/misc/room_d1_1.png'
+import loading from '../assets/sprites/misc/loading.png'
 import angel from '../assets/sprites/enemies/angel.png'
+import ophanim from '../assets/sprites/enemies/ophanim.png'
+import seraph from '../assets/sprites/enemies/seraph.png'
 import player from '../assets/sprites/player/player.png'
 import bullet from '../assets/sprites/utils/bullet.png'
+import portal from '../assets/sprites/utils/portal.png'
 import shootSound from '../assets/audio/utils/shoot.wav'
 import reloadSound from '../assets/audio/utils/reload.wav'
 import backgroundMusic from '../assets/audio/music/backgroundMusic.mp3'
@@ -19,7 +24,7 @@ import backgroundMusic from '../assets/audio/music/backgroundMusic.mp3'
 export default class Boot extends Phaser.Scene {
   /**
    * Constructor de la escena
-   */
+   */ 
   constructor() {
     super({ key: 'boot' });
   }
@@ -30,10 +35,15 @@ export default class Boot extends Phaser.Scene {
   preload() {
     // Con setPath podemos establecer el prefijo que se añadirá a todos los load que aparecen a continuación
     //this.load.setPath('assets/sprites/');
+    this.load.image('loading', loading);
     this.load.image('angel', angel);
-    this.load.image('room', room);
+    this.load.image('seraph', seraph);
+    this.load.image('ophanim', ophanim);
+    this.load.image('room_d1_2', room_d1_2);
+    this.load.image('room_d1_1', room_d1_1);
     this.load.image('player', player);
     this.load.image('bullet', bullet);
+    this.load.image('portal', portal);
     this.load.audio('shootSound', shootSound);
     this.load.audio('reloadSound', reloadSound);
     this.load.audio('backgroundMusic', backgroundMusic);
@@ -44,6 +54,7 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('level');
+    this.add.image(320, 256, 'loading');
+    this.scene.start('d1_1');
   }
 }

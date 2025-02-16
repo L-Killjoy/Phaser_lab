@@ -1,9 +1,9 @@
 import Enemy from "./enemy";
 
-export default class Angel extends Enemy{
+export default class Seraph extends Enemy{
     
     constructor(scene, x, y) {
-        super(scene, x, y, 'angel');
+        super(scene, x, y, 'seraph');
 
         this._life = 6;
         this._speed = 1;
