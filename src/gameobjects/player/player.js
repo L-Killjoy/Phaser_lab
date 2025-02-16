@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import Bullet from '../utils/bullet.js'
+import Bullet from '../utils/bullet.js';
+import get_norm_dist from '../../utils/vector.js'
 
 export default class Player extends Phaser.GameObjects.Sprite {
 
@@ -131,10 +132,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
         console.log(this._life);
 
         enemy._touch_damage = true;
-        let rate = 5;
-        let new_x = enemy.x - this.x;
-        let new_y = enemy.y - this.y;
-        enemy.body.setVelocity(new_x*rate, new_y*rate);
+        let rate = 500;
+        let {x_norm, y_norm} = get_norm_dist(this.x, this.y, enemy.x, enemy.y);
+        enemy.body.setVelocity(x_norm*rate, y_norm*rate);
 
         this.scene.time.delayedCall(50, () => {
             enemy._touch_damage = false;
