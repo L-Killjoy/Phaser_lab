@@ -25,6 +25,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         if(!this._touch_damage){
             let {x_norm, y_norm} = get_norm_dist(this.x, this.y, this.scene.player.x, this.scene.player.y);
             this.body.setVelocity(x_norm*this._speed, y_norm*this._speed);
+
         }
     }
 }
